@@ -4,7 +4,7 @@ import (
 	"sync"
 	"testing"
 
-	"github.com/cheekybits/is"
+	"github.com/tylerb/is"
 )
 
 func TestGLS(t *testing.T) {
