@@ -49,7 +49,7 @@ func parseUintBytes(s []byte, base int, bitSize int) (n uint64, err error) {
 	switch {
 	case len(s) < 1:
 		err = strconv.ErrSyntax
-		goto Error
+		return n, &strconv.NumError{Func: "ParseUint", Num: string(s0), Err: err}
 
 	case 2 <= base && base <= 36:
 		// valid base; nothing to do
@@ -62,7 +62,7 @@ func parseUintBytes(s []byte, base int, bitSize int) (n uint64, err error) {
 			s = s[2:]
 			if len(s) < 1 {
 				err = strconv.ErrSyntax
-				goto Error
+				return n, &strconv.NumError{Func: "ParseUint", Num: string(s0), Err: err}
 			}
 		case s[0] == '0':
 			base = 8
@@ -72,7 +72,7 @@ func parseUintBytes(s []byte, base int, bitSize int) (n uint64, err error) {
 
 	default:
 		err = errors.New("invalid base " + strconv.Itoa(base))
-		goto Error
+		return n, &strconv.NumError{Func: "ParseUint", Num: string(s0), Err: err}
 	}
 
 	n = 0
@@ -92,19 +92,19 @@ func parseUintBytes(s []byte, base int, bitSize int) (n uint64, err error) {
 		default:
 			n = 0
 			err = strconv.ErrSyntax
-			goto Error
+			return n, &strconv.NumError{Func: "ParseUint", Num: string(s0), Err: err}
 		}
 		if int(v) >= base {
 			n = 0
 			err = strconv.ErrSyntax
-			goto Error
+			return n, &strconv.NumError{Func: "ParseUint", Num: string(s0), Err: err}
 		}
 
 		if n >= cutoff {
 			// n*base overflows
 			n = 1<<64 - 1
 			err = strconv.ErrRange
-			goto Error
+			return n, &strconv.NumError{Func: "ParseUint", Num: string(s0), Err: err}
 		}
 		n *= uint64(base)
 
@@ -113,15 +113,12 @@ func parseUintBytes(s []byte, base int, bitSize int) (n uint64, err error) {
 			// n+v overflows
 			n = 1<<64 - 1
 			err = strconv.ErrRange
-			goto Error
+			return n, &strconv.NumError{Func: "ParseUint", Num: string(s0), Err: err}
 		}
 		n = n1
 	}
 
 	return n, nil
-
-Error:
-	return n, &strconv.NumError{Func: "ParseUint", Num: string(s0), Err: err}
 }
 
 // Return the first number n such that n*base >= 1<<64.
