@@ -1,4 +1,4 @@
-gls [![GoDoc](https://godoc.org/github.com/tylerb/gls?status.png)](http://godoc.org/github.com/tylerb/gls)
+gls [![GoDoc](https://godoc.org/github.com/tylerb/gls?status.png)](http://godoc.org/github.com/tylerb/gls) [![Build Status](https://drone.io/github.com/tylerb/gls/status.png)](https://drone.io/github.com/tylerb/gls/latest) [![Coverage Status](https://coveralls.io/repos/tylerb/gls/badge.svg?branch=master)](https://coveralls.io/r/tylerb/gls?branch=master)
 ===
 
 GoRoutine local storage using GoRoutine IDs
